@@ -1,0 +1,5 @@
+type = scripted
+command = /usr/bin/sh -c "/usr/local/bin/zramc.sh start"
+stop-command = /usr/bin/sh -c "/usr/local/bin/zramc.sh stop"
+restart = true
+logfile = /var/log/zramc.log
