@@ -6,20 +6,19 @@ log() {
 
 start() {
   log "calculating zram size...."
-  memtotal=$(grep 'MemTotal:' /proc/meminfo | tr -s ' ' | cut -d ' ' -f 2)
-  log "zram size is $((memtotal))KiB"
+  memtotal=$(grep 'MemTotal:' /proc/meminfo | grep -E --only-matching '[[:digit:]]+')
+  memtotal=$((memtotal * 1024))
 
-  log "enabling zram module..."
+  log "loading zram module"
   modprobe zram
-  log "zram module enabled"
 
   log "creating device /dev/zram0 using zstd with $((memtotal))KiB"
   zramctl /dev/zram0 --algorithm zstd --size "$((memtotal))KiB"
 
-  log "creating swap on /dev/zram0 ..."
+  log "creating swap on /dev/zram0"
   mkswap -U clear /dev/zram0
 
-  log "activating swap ..."
+  log "activating swap"
   swapon --discard --priority 100 /dev/zram0
 
   log "Swap on ZRAM activated :)"
