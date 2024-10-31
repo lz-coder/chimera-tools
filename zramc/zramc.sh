@@ -6,14 +6,13 @@ log() {
 
 start() {
   log "calculating zram size...."
-  memtotal=$(grep 'MemTotal:' /proc/meminfo | grep -E --only-matching '[[:digit:]]+')
-  memtotal=$((memtotal * 1024))
+  mem_total=$(grep MemTotal /proc/meminfo | grep -E --only-matching '[[:digit:]]+')
 
   log "loading zram module"
   modprobe zram
 
-  log "creating device /dev/zram0 using zstd with $((memtotal))KiB"
-  zramctl /dev/zram0 --algorithm zstd --size "$((memtotal))KiB"
+  log "creating device /dev/zram0 using zstd with $((mem_total))KiB"
+  zramctl /dev/zram0 --algorithm zstd --size "$((mem_total))KiB"
 
   log "creating swap on /dev/zram0"
   mkswap -U clear /dev/zram0
