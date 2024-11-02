@@ -1,4 +1,5 @@
 type = scripted
+after = local.target
 command = /usr/bin/sh -c "/usr/local/bin/zramc.sh start"
 stop-command = /usr/bin/sh -c "/usr/local/bin/zramc.sh stop"
 restart = true
